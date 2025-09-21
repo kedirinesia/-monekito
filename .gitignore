@@ -1,0 +1,132 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VS Code
+.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+**/build/
+**/dist/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+**/android/**/build/
+**/android/**/debug/
+**/android/**/profile/
+**/android/**/release/
+
+# Project specific
+**/generated/
+android/app/.cxx/
+
+# FVM Version Cache
+.fvm/
+
+# Keystore files
+**/android/**/*.jks
+**/android/**/*.p12
+**/android/**/*.key
+**/android/keys/key.properties
+
+# Additional files to exclude for smaller ZIP
+**/node_modules/
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+**/.env
+**/.env.local
+**/.env.development.local
+**/.env.test.local
+**/.env.production.local
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Log files
+*.log
+logs/
+
+# Cache directories
+.cache/
+**/.cache/
+
+# Test coverage
+coverage/
+**/coverage/
+
+# Dependencies
+**/vendor/
+**/bower_components/
+
+# IDE specific
+**/.idea/
+**/.vscode/
+**/*.sublime-project
+**/*.sublime-workspace
+
+# Build outputs
+**/out/
+**/target/
+**/bin/
+**/obj/
+
+# Documentation
+**/docs/build/
+**/docs/_build/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Compressed files
+*.zip
+*.tar.gz
+*.rar
+*.7z
