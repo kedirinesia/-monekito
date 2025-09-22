@@ -1,11 +1,14 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:monekito/app/transactions/form/transaction_form.page.dart';
+import 'package:monekito/app/transactions/transaction_details.page.dart';
 import 'package:monekito/core/database/app_db.dart';
 import 'package:monekito/core/database/services/transaction/transaction_service.dart';
 import 'package:monekito/core/models/transaction/transaction.dart';
 import 'package:monekito/core/models/transaction/transaction_type.enum.dart';
 import 'package:monekito/core/presentation/widgets/confirm_dialog.dart';
 import 'package:monekito/core/routes/route_utils.dart';
+import 'package:monekito/core/services/image_picker_service.dart';
 import 'package:monekito/core/utils/list_tile_action_item.dart';
 import 'package:monekito/core/utils/uuid.dart';
 import 'package:monekito/core/utils/balance_validator.dart';
@@ -43,6 +46,11 @@ class TransactionViewActionService {
               .cloneTransactionWithAlertAndSnackBar(context,
                   transaction: transaction),
         ),
+      ListTileActionItem(
+        label: 'Change Image',
+        icon: Icons.image,
+        onClick: () => _changeTransactionImage(context, transaction),
+      ),
       ListTileActionItem(
           label: t.ui_actions.delete,
           icon: Icons.delete,
@@ -174,6 +182,72 @@ class TransactionViewActionService {
       await db.into(db.transactionTags).insert(
             TransactionTag(transactionID: newTrId, tagID: tag.id),
           );
+    }
+  }
+
+  /// Change the image for a transaction
+  Future<void> _changeTransactionImage(
+    BuildContext context,
+    MoneyTransaction transaction,
+  ) async {
+    final imagePicker = ImagePickerService();
+    final selectedImage = await imagePicker.pickImageFromGallery(context);
+    
+    if (selectedImage != null) {
+      try {
+        // Save the image path to the transaction notes field
+        // We'll use a special format to store the image path
+        final imagePath = selectedImage.path;
+        final updatedNotes = 'IMAGE_PATH:$imagePath';
+        
+        // Update the transaction in the database
+        final db = AppDB.instance;
+        await db.update(db.transactions).replace(
+          TransactionInDB(
+            id: transaction.id,
+            date: transaction.date,
+            accountID: transaction.accountID,
+            value: transaction.value,
+            title: transaction.title,
+            notes: updatedNotes,
+            type: transaction.type,
+            status: transaction.status,
+            categoryID: transaction.categoryID,
+            valueInDestiny: transaction.valueInDestiny,
+            receivingAccountID: transaction.receivingAccountID,
+            isHidden: transaction.isHidden,
+            locLatitude: transaction.locLatitude,
+            locLongitude: transaction.locLongitude,
+            locAddress: transaction.locAddress,
+            intervalPeriod: transaction.intervalPeriod,
+            intervalEach: transaction.intervalEach,
+            endDate: transaction.endDate,
+            remainingTransactions: transaction.remainingTransactions,
+          ),
+        );
+        
+        final scaffold = ScaffoldMessenger.of(context);
+        scaffold.showSnackBar(
+          const SnackBar(
+            content: Text('Image updated successfully!'),
+            backgroundColor: Colors.green,
+          ),
+        );
+        
+        // Refresh the page to show the updated image
+        if (context.mounted) {
+          Navigator.of(context).pop();
+          // The page will automatically refresh due to StreamBuilder
+        }
+      } catch (e) {
+        final scaffold = ScaffoldMessenger.of(context);
+        scaffold.showSnackBar(
+          SnackBar(
+            content: Text('Error updating image: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 }

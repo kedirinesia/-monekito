@@ -9,6 +9,7 @@ import 'package:monekito/core/presentation/widgets/number_ui_formatters/currency
 import 'package:monekito/core/presentation/widgets/number_ui_formatters/ui_number_formatter.dart';
 import 'package:monekito/core/routes/route_utils.dart';
 import 'package:monekito/core/services/view-actions/transaction_view_actions_service.dart';
+import 'package:monekito/core/utils/image_utils.dart';
 
 import '../../../core/presentation/app_colors.dart';
 
@@ -151,7 +152,8 @@ class TransactionListTile extends StatelessWidget {
                           secondaryText =
                               DateFormat.yMMMd().format(transaction.date);
                         } else {
-                          secondaryText = transaction.notes ?? '';
+                          // Use clean notes without image path
+                          secondaryText = ImageUtils.getCleanNotes(transaction.notes) ?? '';
                         }
                       }
 
@@ -244,7 +246,7 @@ class TransactionListTile extends StatelessWidget {
                   ),
                 ],
               )
-            : transaction.getDisplayIcon(context, size: 28, padding: 6),
+            : transaction.getDisplayWidget(context, size: 28, padding: 6),
       ),
       selected: isSelected,
       selectedTileColor:

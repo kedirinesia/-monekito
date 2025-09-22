@@ -25,6 +25,7 @@ import 'package:monekito/core/utils/constants.dart';
 import 'package:monekito/core/utils/list_tile_action_item.dart';
 import 'package:monekito/core/utils/uuid.dart';
 import 'package:monekito/core/utils/balance_validator.dart';
+import 'package:monekito/core/utils/image_utils.dart';
 import 'package:monekito/i18n/generated/translations.g.dart';
 
 import '../../core/models/transaction/transaction_type.enum.dart';
@@ -587,12 +588,12 @@ class _TransactionDetailsPageState extends State<TransactionDetailsPage> {
                                 ),
                               ),
                             ],
-                            if (transaction.notes != null) ...[
+                            if (ImageUtils.getCleanNotes(transaction.notes) != null) ...[
                               const SizedBox(height: 16),
                               CardWithHeader(
                                 title: t.transaction.form.description,
                                 bodyPadding: const EdgeInsets.all(16),
-                                body: Text(transaction.notes!),
+                                body: Text(ImageUtils.getCleanNotes(transaction.notes)!),
                               )
                             ],
                             StreamBuilder(
@@ -856,7 +857,7 @@ class _TransactionDetailHeader extends SliverPersistentHeaderDelegate {
           const SizedBox(width: 24),
           Hero(
             tag: heroTag ?? UniqueKey(),
-            child: transaction.getDisplayIcon(
+            child: transaction.getDisplayWidget(
               context,
               size: 42 - (1 - pow(1 - shrinkPercent, 4)) * 16,
             ),

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:monekito/core/database/app_db.dart';
 import 'package:monekito/core/extensions/color.extensions.dart';
@@ -133,6 +134,60 @@ class MoneyTransaction extends TransactionInDB {
               padding: padding,
               borderRadius: 999999,
             );
+
+  /// Get display widget that shows either custom image or default icon
+  Widget getDisplayWidget(
+    BuildContext context, {
+    double size = 22,
+    double? padding,
+  }) {
+    // Check if there's a custom image
+    final imagePath = _getImagePathFromNotes();
+    if (imagePath != null) {
+      return Container(
+        width: size,
+        height: size,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(size / 2),
+          border: Border.all(
+            color: Theme.of(context).dividerColor,
+            width: 1,
+          ),
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(size / 2),
+          child: Image.file(
+            File(imagePath),
+            fit: BoxFit.cover,
+            width: size,
+            height: size,
+            errorBuilder: (context, error, stackTrace) {
+              return getDisplayIcon(context, size: size, padding: padding);
+            },
+          ),
+        ),
+      );
+    }
+    
+    // Return default icon
+    return getDisplayIcon(context, size: size, padding: padding);
+  }
+  
+  /// Extract image path from notes
+  String? _getImagePathFromNotes() {
+    if (notes == null || notes!.isEmpty) return null;
+    
+    if (notes!.startsWith('IMAGE_PATH:')) {
+      final path = notes!.substring('IMAGE_PATH:'.length);
+      // Check if the file still exists
+      final file = File(path);
+      if (file.existsSync()) {
+        return path;
+      }
+    }
+    
+    return null;
+  }
 
   NextPayStatus? get nextPayStatus {
     if (recurrentInfo.isNoRecurrent && status != TransactionStatus.pending) {

@@ -11,6 +11,7 @@ import 'package:monekito/app/settings/widgets/setting_card_item.dart';
 import 'package:monekito/app/stats/stats_page.dart';
 import 'package:monekito/app/tags/tag_list.page.dart';
 import 'package:monekito/app/transactions/recurrent_transactions_page.dart';
+import 'package:monekito/app/settings/pages/image_picker_test_page.dart';
 import 'package:monekito/core/presentation/responsive/breakpoints.dart';
 import 'package:monekito/core/routes/route_utils.dart';
 import 'package:monekito/i18n/generated/translations.g.dart';
@@ -155,6 +156,15 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                   ]
                 ],
+              ),
+              const SizedBox(height: 16),
+              // Test Image Picker Button
+              SettingCardItem(
+                title: 'Test Image Picker',
+                subtitle: 'Test the new image picker functionality',
+                icon: Icons.image,
+                mainAxis: Axis.horizontal,
+                onTap: () => RouteUtils.pushRoute(context, const ImagePickerTestPage()),
               ),
             ],
           ),
